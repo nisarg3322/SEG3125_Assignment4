@@ -41,6 +41,9 @@ function NavbarComp() {
             <Nav.Link as={Link} to="/Shop">
               Shop
             </Nav.Link>
+            <Nav.Link as={Link} to="/Survey?showFeedback=true">
+              Survey
+            </Nav.Link>
           </Nav>
 
           <Form className="d-flex" onSubmit={handleSubmit}>

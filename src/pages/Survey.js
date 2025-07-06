@@ -3,12 +3,21 @@ import "../App.css";
 import { Link } from "react-router-dom";
 import { Alert, Form, Button, Container, Nav, Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import { BsCart } from "react-icons/bs";
 
 function Survey() {
+  const location = useLocation();
   const [showSurvey, setShowSurvey] = useState(false);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showFeedback") === "true") {
+      setShowSurvey(true);
+    }
+  }, [location.search]);
   return (
     <div className="App">
       <header className="App-header">
