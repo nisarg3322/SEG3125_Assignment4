@@ -1,8 +1,7 @@
-import React from "react";
 import { useCart } from "../CartContext";
-import { Card, Button, Container, Row, Col, Form } from "react-bootstrap";
+import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import NavbarComp from "./Navbar";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const { cart, removeFromCart, clearCart } = useCart();
