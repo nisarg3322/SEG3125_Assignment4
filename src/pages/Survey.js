@@ -11,6 +11,7 @@ import { BsCart } from "react-icons/bs";
 function Survey() {
   const location = useLocation();
   const [showSurvey, setShowSurvey] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -18,6 +19,11 @@ function Survey() {
       setShowSurvey(true);
     }
   }, [location.search]);
+
+  const handleSubmitFeedback = () => {
+    setFeedbackSubmitted(true);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -39,7 +45,6 @@ function Survey() {
                 <Nav.Link as={Link} to="/Shop">
                   Shop
                 </Nav.Link>
-
                 <Nav.Link as={Link} to="/Survey">
                   Survey
                 </Nav.Link>
@@ -101,6 +106,21 @@ function Survey() {
                 Leave Feedback
               </Button>
             </Alert>
+          ) : feedbackSubmitted ? (
+            <Alert
+              style={{
+                backgroundColor: "#27667B",
+                color: "white",
+                fontSize: "1.2rem",
+                width: "400px",
+                textAlign: "center",
+                border: "none",
+              }}
+            >
+              <strong>Thank you for your feedback!</strong>
+              <br />
+              Your response has been submitted successfully.
+            </Alert>
           ) : (
             <Alert
               style={{
@@ -125,6 +145,7 @@ function Survey() {
                   border: "0px",
                   color: "black",
                 }}
+                onClick={handleSubmitFeedback}
               >
                 Submit
               </Button>

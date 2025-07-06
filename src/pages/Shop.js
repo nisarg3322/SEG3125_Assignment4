@@ -11,6 +11,9 @@ const products = [
     category: "phone",
     name: "iPhone 15",
     price: "$1200",
+    originalPrice: "$1200",
+    salePrice: "$999",
+    onSale: true,
     image: "/Iphone15.jpg",
   },
   { category: "phone", name: "S24", price: "$1100", image: "/SamsungS24.jpg" },
@@ -19,6 +22,9 @@ const products = [
     category: "laptop",
     name: "Lenovo Laptop",
     price: "$1500",
+    originalPrice: "$1500",
+    salePrice: "$1299",
+    onSale: true,
     image: "/LenovoLaptop.jpg",
   },
   {
@@ -48,6 +54,8 @@ function Shop() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [category, setCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [saleFilter, setSaleFilter] = useState(false);
+
   const handleCategoryChange = (e) => {
     const value = e.target.value;
 
@@ -59,6 +67,10 @@ function Shop() {
       setSelectedCategory(value);
       navigate(`/Shop?category=${value}`); // update URL
     }
+  };
+
+  const handleSaleFilter = (e) => {
+    setSaleFilter(e.target.checked);
   };
 
   const { addToCart } = useCart();
@@ -78,12 +90,13 @@ function Shop() {
   }, [location.search, navigate]);
 
   const filteredProducts =
-    searchKeyword || category
+    searchKeyword || category || saleFilter
       ? products.filter(
           (product) =>
             (searchKeyword &&
               product.name.toLowerCase().includes(searchKeyword)) ||
-            (category && product.category === category)
+            (category && product.category === category) ||
+            (saleFilter && product.onSale)
         )
       : products;
 
@@ -119,8 +132,12 @@ function Shop() {
                   onChange={handleCategoryChange}
                 />
                 <h3 className="mt-3">Price</h3>
-                <Form.Check type="checkbox" label="On Sale" disabled />{" "}
-                {/* implement later */}
+                <Form.Check
+                  type="checkbox"
+                  label="On Sale"
+                  checked={saleFilter}
+                  onChange={handleSaleFilter}
+                />
               </Form>
             </Col>
 
@@ -136,7 +153,29 @@ function Shop() {
                       />
                       <Card.Body>
                         <Card.Title>{product.name}</Card.Title>
-                        <Card.Text>{product.price}</Card.Text>
+                        {product.onSale ? (
+                          <div>
+                            <Card.Text
+                              style={{
+                                textDecoration: "line-through",
+                                color: "gray",
+                              }}
+                            >
+                              {product.originalPrice}
+                            </Card.Text>
+                            <Card.Text
+                              style={{
+                                color: "red",
+                                fontWeight: "bold",
+                                fontSize: "1.1em",
+                              }}
+                            >
+                              {product.salePrice}
+                            </Card.Text>
+                          </div>
+                        ) : (
+                          <Card.Text>{product.price}</Card.Text>
+                        )}
                         <Button
                           style={{
                             backgroundColor: "#1DDAF7",
